@@ -1,10 +1,73 @@
-<div>
-    <form method="post">
-        {% csrf_token %}
-        <label for="phone">Enter Phone Number: </label>
-        <input type="text" name="phone">
-        <label for="amount">Enter amount: </label>
-        <input type="number" name="amount">
-        <button type="submit">Pay</button>
-    </form>
-</div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Hotel M-Pesa Payment</title>
+</head>
+
+<body>
+
+    <main>
+        <h2>Hotel Payment Portal</h2>
+
+        <p>Complete your payment using M-Pesa.</p>
+        <div>{% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}</div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div>
+                <label for="phone">
+                    M-Pesa Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="2547XXXXXXXX"
+                    pattern="254[17][0-9]{8}"
+                    maxlength="12"
+                    required
+                >
+            </div>
+
+            <div>
+                <label for="product">
+                    Select Hotel Service
+                </label>
+
+                <select
+                    id="product"
+                    name="product_id"
+                    required
+                >
+                    <option value="">
+                        -- Select a service --
+                    </option>
+
+                    {% for product in products %}
+                        <option value="{{ product.id }}">
+                            {{ product.product_name }}
+                            - KSh {{ product.price }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">
+                Pay with M-Pesa
+            </button>
+
+        </form>
+    </main>
+
+</body>
+</html>
